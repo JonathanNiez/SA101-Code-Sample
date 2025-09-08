@@ -54,9 +54,5 @@ namespace SA101
         {
             LoadStudents();
         }
-
-       
     }
-
-
 }

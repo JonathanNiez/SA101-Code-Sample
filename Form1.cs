@@ -4,7 +4,10 @@ namespace SA101
 {
     public partial class Form1 : Form
     {
+
         string connectionString = DbConnectionHelper.GetConnectionString();
+
+
         public Form1()
         {
             InitializeComponent();
@@ -57,21 +60,6 @@ namespace SA101
             }
         }
 
-        private void CheckConnection()
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    MessageBox.Show("Connection successful!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Connection failed: {ex.Message}");
-                }
-            }
-        }
 
         private void InsertStudent()
         {
@@ -122,7 +110,7 @@ namespace SA101
 
         private void checkConnectionBtn_Click(object sender, EventArgs e)
         {
-            CheckConnection();
+            DbConnectionHelper.CheckConnection();
         }
         private void goToForm2Btn_Click(object sender, EventArgs e)
         {

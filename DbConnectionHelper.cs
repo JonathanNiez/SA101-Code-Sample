@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Data.SqlClient;
 
 namespace SA101
 {
@@ -14,6 +10,22 @@ namespace SA101
         public static string GetConnectionString()
         {
             return connectionString;
+        }
+
+        public static void CheckConnection()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    MessageBox.Show("Connection successful!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Connection failed: {ex.Message}");
+                }
+            }
         }
     }
 }
