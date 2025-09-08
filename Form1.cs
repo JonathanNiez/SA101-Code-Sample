@@ -18,7 +18,7 @@ namespace SA101
         {
             string query = @"
                         CREATE TABLE Students (
-                        Student_id INT PRIMARY KEY IDENTITY,
+                        StudentID INT PRIMARY KEY IDENTITY,
                         FirstName NVARCHAR(100) NOT NULL,
                         LastName NVARCHAR(100) NOT NULL,
                         Age INT NOT NULL
