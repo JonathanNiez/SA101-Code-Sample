@@ -39,6 +39,7 @@
             addButton = new Button();
             goToForm2Btn = new Button();
             checkConnectionBtn = new Button();
+            exitBtn = new Button();
             SuspendLayout();
             // 
             // createTableBtn
@@ -142,11 +143,22 @@
             checkConnectionBtn.UseVisualStyleBackColor = true;
             checkConnectionBtn.Click += checkConnectionBtn_Click;
             // 
+            // exitBtn
+            // 
+            exitBtn.Location = new Point(697, 395);
+            exitBtn.Name = "exitBtn";
+            exitBtn.Size = new Size(97, 43);
+            exitBtn.TabIndex = 6;
+            exitBtn.Text = "Exit";
+            exitBtn.UseVisualStyleBackColor = true;
+            exitBtn.Click += exitBtn_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(exitBtn);
             Controls.Add(goToForm2Btn);
             Controls.Add(addButton);
             Controls.Add(label3);
@@ -177,5 +189,6 @@
         private Button addButton;
         private Button goToForm2Btn;
         private Button checkConnectionBtn;
+        private Button exitBtn;
     }
 }

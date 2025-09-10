@@ -63,39 +63,42 @@ namespace SA101
 
         private void InsertStudent()
         {
-            string firstName = firstNameTB.Text;
-            string lastName = lastNameTB.Text;
-
-            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
-            {
-                MessageBox.Show("Fields must not be empty");
-                return;
-            }
-
-            if (!int.TryParse(ageTB.Text, out int age))
-            {
-                MessageBox.Show("Please enter a valid age.");
-                return;
-            }
-
-            string query = "INSERT INTO Students (FirstName, LastName, Age) VALUES (@FirstName, @LastName, @Age)";
             try
             {
-                using (var connection = new SqlConnection(connectionString))
-                using (var command = new SqlCommand(query, connection))
+                string firstName = firstNameTB.Text;
+                string lastName = lastNameTB.Text;
+
+                if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
                 {
-                    command.Parameters.AddWithValue("@FirstName", firstName);
-                    command.Parameters.AddWithValue("@LastName", lastName);
-                    command.Parameters.AddWithValue("@Age", age);
-                    connection.Open();
-                    command.ExecuteNonQuery();
+                    MessageBox.Show("Fields must not be empty");
+                    return;
+                }
+
+                if (!int.TryParse(ageTB.Text, out int age))
+                {
+                    MessageBox.Show("Please enter a valid age.");
+                    return;
+                }
+
+                using (var db = new AddDbContext())
+                {
+                    var student = new Student
+                    {
+                        FirstName = firstNameTB.Text,
+                        LastName = lastNameTB.Text,
+                        Age = int.Parse(ageTB.Text)
+                    };
+                    db.Students.Add(student);
+                    db.SaveChanges();
                     MessageBox.Show("Student inserted successfully.");
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error inserting student: {ex.Message}");
+                return;
             }
+
         }
 
         private void loadBtn_Click(object sender, EventArgs e)
@@ -122,6 +125,11 @@ namespace SA101
         private void addButton_Click(object sender, EventArgs e)
         {
             InsertStudent();
+        }
+
+        private void exitBtn_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

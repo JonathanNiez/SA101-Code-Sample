@@ -23,19 +23,12 @@ namespace SA101
 
         private void LoadStudents()
         {
-            string query = "SELECT * FROM Students";
             try
             {
-                using (var connection = new SqlConnection(connectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var db = new AddDbContext())
                 {
-                    connection.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        var dt = new DataTable();
-                        dt.Load(reader);
-                        studentsDGV.DataSource = dt;
-                    }
+                    var students = db.Students.ToList();
+                    studentsDGV.DataSource = students;
                 }
             }
             catch (Exception ex)
@@ -60,21 +53,21 @@ namespace SA101
                 return;
             }
 
-            string query = "UPDATE Students SET FirstName = @FirstName, LastName = @LastName, Age = @Age WHERE StudentID = @StudentID";
             try
             {
-                using (var connection = new SqlConnection(connectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var db = new AddDbContext())
                 {
-                    command.Parameters.AddWithValue("@FirstName", firstName);
-                    command.Parameters.AddWithValue("@LastName", lastName);
-                    command.Parameters.AddWithValue("@Age", age);
-                    command.Parameters.AddWithValue("@StudentID", studentId);
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    MessageBox.Show("Student updated successfully.");
+                    var student = db.Students.Find(studentId);
+                    if (student != null)
+                    {
+                        student.FirstName = firstNameTB.Text;
+                        student.LastName = lastNameTB.Text;
+                        student.Age = int.Parse(ageTB.Text);
+                        db.SaveChanges();
+                        MessageBox.Show("Student updated successfully.");
+                    }
                 }
-                LoadStudents(); // Refresh the grid
+                LoadStudents();
             }
             catch (Exception ex)
             {
@@ -96,18 +89,19 @@ namespace SA101
             if (confirm != DialogResult.Yes)
                 return;
 
-            string query = "DELETE FROM Students WHERE StudentID = @StudentID";
             try
             {
-                using (var connection = new SqlConnection(connectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var db = new AddDbContext())
                 {
-                    command.Parameters.AddWithValue("@StudentID", studentId);
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    MessageBox.Show("Student deleted successfully.");
+                    var student = db.Students.Find(studentId);
+                    if (student != null)
+                    {
+                        db.Students.Remove(student);
+                        db.SaveChanges();
+                        MessageBox.Show("Student deleted successfully.");
+                    }
                 }
-                LoadStudents(); // Refresh the grid
+                LoadStudents();
             }
             catch (Exception ex)
             {
